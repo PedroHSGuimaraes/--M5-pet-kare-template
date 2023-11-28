@@ -86,7 +86,7 @@ class PetDetailViewsTest(APITestCase):
             **model_to_dict(pet1.traits.all()[0]),
             "created_at": mock_now.return_value,
         }
-        trait1_dict.pop('pets', '')
+        trait1_dict.pop("pets", "")
         trait1_name = trait1_dict.pop("name")
         trait1_dict.update({"trait_name": trait1_name})
 
@@ -192,9 +192,7 @@ class PetDetailViewsTest(APITestCase):
 
         message = "Verifique se sua rota de atualização está substituindo todas as traits antigas e deixando somente as novas"
         expected_pet_traits_length = 1
-        self.assertEqual(
-            expected_pet_traits_length, pet_1.traits.count(), message
-        )
+        self.assertEqual(expected_pet_traits_length, pet_1.traits.count(), message)
 
     def test_can_update_pet_group(self):
         group = Group.objects.create(**self.group_data_1)
@@ -211,8 +209,14 @@ class PetDetailViewsTest(APITestCase):
         self.assertEqual(response.status_code, 200, message)
 
         response_get = self.client.get(URL_DETAIL)
-        message = "Verifique se a sua rota está persistindo as mudanças no banco de dados."
-        self.assertEqual(response_get.json()["group"]["scientific_name"], self.group_data_2["scientific_name"], message)
+        message = (
+            "Verifique se a sua rota está persistindo as mudanças no banco de dados."
+        )
+        self.assertEqual(
+            response_get.json()["group"]["scientific_name"],
+            self.group_data_2["scientific_name"],
+            message,
+        )
 
     def test_can_not_update_pet_with_invalid_sex_field(self):
         group = Group.objects.create(**self.group_data_1)
@@ -237,16 +241,20 @@ class PetDetailViewsTest(APITestCase):
         status_code = response.status_code
 
         message = "Verifique se existe uma rota de deleção para pets"
-        dont_exist_delete_route_text = '<p>The requested resource was not found on this server.</p>'
+        dont_exist_delete_route_text = (
+            "<p>The requested resource was not found on this server.</p>"
+        )
         error_message = str(response._container[0])
-        
+
         if dont_exist_delete_route_text in error_message:
             self.assertTrue(False, message)
 
         self.assertEqual(response.data, {"detail": "Not found."})
 
-        message = "Verifique se sua rota de deleção está retornando o status code correto"
-        
+        message = (
+            "Verifique se sua rota de deleção está retornando o status code correto"
+        )
+
         self.assertEqual(status_code, 404, message)
 
     def test_can_delete_pet(self):
