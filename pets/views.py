@@ -99,4 +99,4 @@ class PetDetailView(APIView, PageNumberPagination):
         pet.save()
         serializer = PetSerializer(pet)
 
-        return Response(serializer.data, status=status.HTTP_200_K)
+        return Response(serializer.data, status=status.HTTP_200_OK)
